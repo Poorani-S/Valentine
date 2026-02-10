@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Valentine's Day</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+      }
+
+      section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        scroll-snap-align: start;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+      }
+      p {
+        font-size: 1.2rem;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 25px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+        max-width: 420px;
+        width: 100%;
+      }
+
+      .gif {
+        width: 100%;
+        max-width: 260px;
+        margin-bottom: 15px;
+        border-radius: 14px;
+      }
+
+      .buttons button {
+        margin: 12px;
+        padding: 12px 26px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: #ff4d6d;
+        color: white;
+      }
+
+      .no-btn {
+        position: absolute;
+        background: #999;
+      }
+      .heart {
+        position: fixed;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        transform: rotate(45deg);
+        animation: floatUp 6s linear forwards;
+        z-index: 0;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -8px;
+        left: 0;
+      }
+      .heart::after {
+        left: -8px;
+        top: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(45deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-110vh) rotate(45deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SECTION 1 -->
+    <section>
+      <div class="card">
+        <h1>Hi Vineesh❤️</h1>
+        <p>Scroll down… I have something special for you Thango👇</p>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section>
+      <div class="card">
+        <img src="ily.gif" class="gif" alt="I Love You" />
+        <p>You Make My Life Better ♡</p>
+      </div>
+    </section>
+
+    <!-- SECTION 3 : PROPOSAL -->
+    <section>
+      <div class="card">
+        <h1>Will you be my Valentine Babyy? 🎀</h1>
+        <div class="buttons">
+          <button id="yesBtn">Yes 💕</button>
+          <button id="noBtn" class="no-btn">No 🙈</button>
+        </div>
+        <p id="response"></p>
+      </div>
+    </section>
+
+    <!-- MUSIC -->
+    <audio id="bgMusic" src="vazhithunaiye.mp3.mp3" preload="auto"></audio>
+
+    <script>
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+      const response = document.getElementById("response");
+      const music = document.getElementById("bgMusic");
+
+      // MUSIC ONLY AFTER YES
+      yesBtn.addEventListener("click", () => {
+        response.innerText = "Vineesh 𖹭 Poorani , forever & always! 💖";
+        music.play();
+      });
+
+      // VIRAL NO BUTTON CHASE
+      document.addEventListener("mousemove", (e) => {
+        const rect = noBtn.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top + rect.height / 2);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 120) {
+          noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+          noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
+        }
+      });
+      // HEART BACKGROUND ANIMATION
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "-20px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+      setInterval(createHeart, 400);
+    </script>
+  </body>
+</html>
