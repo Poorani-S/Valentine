@@ -62,6 +62,55 @@
         position: absolute;
         background: #999;
       }
+
+      /* EXPLORE SECTION */
+      .explore-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .explore-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .explore-card {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 20px;
+        border-radius: 15px;
+        text-decoration: none;
+        transition: all 0.3s;
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+      }
+
+      .explore-card:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .explore-icon {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .explore-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 8px;
+      }
+
+      .explore-desc {
+        font-size: 0.9rem;
+        color: white;
+        opacity: 0.9;
+      }
+
       .heart {
         position: fixed;
         width: 16px;
@@ -107,7 +156,7 @@
     <!-- SECTION 1 -->
     <section>
       <div class="card">
-        <h1>Hi Vineesh❤️</h1>
+        <h1>Oi Vineesh❤️</h1>
         <p>Scroll down… I have something special for you Thango👇</p>
       </div>
     </section>
@@ -129,6 +178,36 @@
           <button id="noBtn" class="no-btn">No 🙈</button>
         </div>
         <p id="response"></p>
+      </div>
+    </section>
+
+    <!-- SECTION 4 : EXPLORE MORE -->
+    <section>
+      <div class="card" style="max-width: 600px">
+        <h1>✨ Explore More ✨</h1>
+        <p style="margin-bottom: 25px">I made something special for you...</p>
+        <div class="explore-grid">
+          <a href="pickup-lines.html" class="explore-card">
+            <div class="explore-icon">💕</div>
+            <div class="explore-title">Pickup Lines</div>
+            <div class="explore-desc">Flirty & cute lines just for fun!</div>
+          </a>
+          <a href="reasons.html" class="explore-card">
+            <div class="explore-icon">💖</div>
+            <div class="explore-title">Why I Love You</div>
+            <div class="explore-desc">Reasons you're so special to me</div>
+          </a>
+          <a href="memories.html" class="explore-card">
+            <div class="explore-icon">📸</div>
+            <div class="explore-title">Our Memories</div>
+            <div class="explore-desc">Beautiful moments we've shared</div>
+          </a>
+          <a href="love-letter.html" class="explore-card">
+            <div class="explore-icon">💌</div>
+            <div class="explore-title">Love Letter</div>
+            <div class="explore-desc">A heartfelt letter for you</div>
+          </a>
+        </div>
       </div>
     </section>
 

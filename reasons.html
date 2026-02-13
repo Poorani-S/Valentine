@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reasons I Love You 💕</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        min-height: 100vh;
+        padding: 80px 20px 40px;
+        overflow-x: hidden;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(8px);
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+        z-index: 100;
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: translateX(-3px);
+      }
+
+      .reasons-container {
+        max-width: 800px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 20px;
+      }
+
+      .reason-card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.6s forwards;
+        transition: all 0.3s;
+      }
+
+      .reason-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reason-number {
+        font-size: 2.5rem;
+        color: #ff4d6d;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .reason-text {
+        font-size: 1.15rem;
+        color: white;
+        line-height: 1.6;
+      }
+
+      .emoji {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .reveal-btn {
+        display: block;
+        margin: 30px auto;
+        padding: 15px 35px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: #ff4d6d;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+      }
+
+      .reveal-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+        background: #ff3355;
+      }
+
+      .reveal-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      /* HEART ANIMATION */
+      .heart {
+        position: fixed;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        transform: rotate(45deg);
+        animation: floatUp 6s linear forwards;
+        z-index: 0;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -8px;
+        left: 0;
+      }
+      .heart::after {
+        left: -8px;
+        top: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(45deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-110vh) rotate(45deg);
+          opacity: 0;
+        }
+      }
+
+      /* MOBILE OPTIMIZATION */
+      @media (max-width: 768px) {
+        body {
+          padding: 70px 15px 30px;
+        }
+
+        h1 {
+          font-size: 2rem;
+          margin-bottom: 8px;
+        }
+
+        .subtitle {
+          font-size: 0.95rem;
+        }
+
+        .back-btn {
+          top: 10px;
+          left: 10px;
+          padding: 10px 18px;
+          font-size: 0.9rem;
+        }
+
+        .reasons-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          padding: 10px;
+        }
+
+        .reason-card {
+          padding: 25px 20px;
+        }
+
+        .reason-number {
+          font-size: 2rem;
+        }
+
+        .reason-text {
+          font-size: 1.05rem;
+        }
+
+        .emoji {
+          font-size: 1.8rem;
+        }
+
+        .reveal-btn {
+          padding: 14px 30px;
+          font-size: 1rem;
+          margin: 25px auto;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 60px 10px 20px;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+        }
+
+        .subtitle {
+          font-size: 0.85rem;
+        }
+
+        .reasons-container {
+          gap: 15px;
+        }
+
+        .reason-card {
+          padding: 20px 15px;
+        }
+
+        .reason-number {
+          font-size: 1.8rem;
+        }
+
+        .reason-text {
+          font-size: 1rem;
+        }
+
+        .emoji {
+          font-size: 1.6rem;
+        }
+
+        .reveal-btn {
+          padding: 12px 25px;
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="back-btn"
+      onclick="window.location.href = 'Valentine Viral Proposal Page.html'"
+    >
+      ← Back
+    </button>
+
+    <div class="header">
+      <h1>💖 Reasons I Love You 💖</h1>
+      <p class="subtitle">Here's why you're so special to me...</p>
+    </div>
+
+    <div class="reasons-container" id="reasonsContainer"></div>
+
+    <button class="reveal-btn" id="revealBtn" onclick="revealNextReason()">
+      💕 Reveal Next Reason 💕
+    </button>
+
+    <script>
+      const reasons = [
+        { emoji: "😊", text: "Your smile lights up my entire world" },
+        { emoji: "💭", text: "You understand me like no one else does" },
+        { emoji: "🌟", text: "You make ordinary moments feel magical" },
+        { emoji: "🤗", text: "Your hugs make everything better" },
+        { emoji: "😂", text: "You make me laugh even on my worst days" },
+        {
+          emoji: "💪",
+          text: "You believe in me when I don't believe in myself",
+        },
+        { emoji: "🎨", text: "You bring color to my black and white world" },
+        { emoji: "🌈", text: "You're my safe place in every storm" },
+        { emoji: "✨", text: "You inspire me to be a better person" },
+        { emoji: "🎵", text: "Your voice is my favorite sound" },
+        { emoji: "🌺", text: "You're beautiful inside and out" },
+        { emoji: "💫", text: "You make my dreams feel possible" },
+        { emoji: "🦋", text: "You give me butterflies every single day" },
+        {
+          emoji: "🌙",
+          text: "You're the last thing I think about before I sleep",
+        },
+        {
+          emoji: "☀️",
+          text: "You're the first thing I want to see when I wake up",
+        },
+        { emoji: "💝", text: "Your kindness touches everyone around you" },
+        { emoji: "🎯", text: "You support all my crazy ideas and dreams" },
+        { emoji: "🌸", text: "You make me feel loved exactly as I am" },
+        { emoji: "🔥", text: "You're passionate about the things you love" },
+        { emoji: "🎁", text: "Every moment with you is a gift" },
+      ];
+
+      let currentIndex = 0;
+
+      function revealNextReason() {
+        if (currentIndex >= reasons.length) {
+          return;
+        }
+
+        const container = document.getElementById("reasonsContainer");
+        const reason = reasons[currentIndex];
+
+        const card = document.createElement("div");
+        card.className = "reason-card";
+        card.style.animationDelay = "0s";
+        card.innerHTML = `
+          <span class="emoji">${reason.emoji}</span>
+          <div class="reason-number">#${currentIndex + 1}</div>
+          <div class="reason-text">${reason.text}</div>
+        `;
+
+        container.appendChild(card);
+        currentIndex++;
+
+        // Update button
+        const btn = document.getElementById("revealBtn");
+        if (currentIndex >= reasons.length) {
+          btn.innerText = "💕 That's All My Love! 💕";
+          btn.disabled = true;
+        }
+
+        // Scroll to new card
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
+      }
+
+      // Reveal first 3 reasons automatically
+      setTimeout(() => revealNextReason(), 500);
+      setTimeout(() => revealNextReason(), 1000);
+      setTimeout(() => revealNextReason(), 1500);
+
+      // HEART BACKGROUND ANIMATION
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "-20px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+      setInterval(createHeart, 400);
+    </script>
+  </body>
+</html>

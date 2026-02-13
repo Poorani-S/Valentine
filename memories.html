@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <title>Our Memories 📸</title>
+    <style>
+      * {
+        -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .container {
+        text-align: center;
+        max-width: 900px;
+        width: 100%;
+        z-index: 10;
+        position: relative;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        color: white;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        color: white;
+        margin-bottom: 40px;
+        opacity: 0.9;
+      }
+
+      .back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(8px);
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+        z-index: 100;
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: translateX(-3px);
+      }
+
+      /* CAROUSEL */
+      .carousel-container {
+        position: relative;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        border-radius: 25px;
+        padding: 40px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        touch-action: pan-x pan-y;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .memory-card {
+        display: none;
+        animation: fadeIn 0.5s;
+      }
+
+      .memory-card.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .memory-image {
+        width: 100%;
+        max-width: 500px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        margin: 0 auto 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 6rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .memory-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .memory-image .emoji-fallback {
+        font-size: 6rem;
+      }
+
+      .memory-date {
+        color: #ff4d6d;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .memory-title {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .memory-caption {
+        color: white;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        opacity: 0.95;
+      }
+
+      /* NAVIGATION BUTTONS */
+      .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(8px);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: white;
+        transition: all 0.3s;
+        z-index: 10;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .nav-btn:active {
+        background: rgba(255, 255, 255, 0.6);
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      .prev-btn {
+        left: -70px;
+      }
+
+      .next-btn {
+        right: -70px;
+      }
+
+      /* DOTS INDICATOR */
+      .dots-container {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s;
+        touch-action: manipulation;
+        min-width: 12px;
+        min-height: 12px;
+      }
+
+      .dot.active {
+        background: #ff4d6d;
+        transform: scale(1.3);
+      }
+
+      .dot:hover {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .dot:active {
+        transform: scale(0.9);
+      }
+
+      .counter {
+        color: white;
+        font-size: 0.95rem;
+        margin-top: 15px;
+        opacity: 0.8;
+      }
+
+      /* HEART ANIMATION */
+      .heart {
+        position: fixed;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        transform: rotate(45deg);
+        animation: floatUp 6s linear forwards;
+        z-index: 0;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -8px;
+        left: 0;
+      }
+      .heart::after {
+        left: -8px;
+        top: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(45deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-110vh) rotate(45deg);
+          opacity: 0;
+        }
+      }
+
+      /* MOBILE RESPONSIVE STYLES */
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+          display: block;
+          min-height: 100vh;
+        }
+
+        .container {
+          margin: 60px auto 30px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+          margin-bottom: 10px;
+        }
+
+        .subtitle {
+          font-size: 0.9rem;
+          margin-bottom: 20px;
+        }
+
+        .back-btn {
+          position: fixed;
+          top: 10px;
+          left: 10px;
+          padding: 10px 18px;
+          font-size: 0.9rem;
+          z-index: 100;
+        }
+
+        .carousel-container {
+          padding: 20px 10px;
+          border-radius: 20px;
+        }
+
+        .memory-image {
+          max-width: 100%;
+          height: 280px;
+          margin-bottom: 20px;
+          border-radius: 15px;
+        }
+
+        .memory-date {
+          font-size: 0.9rem;
+        }
+
+        .memory-title {
+          font-size: 1.3rem;
+          margin-bottom: 10px;
+        }
+
+        .memory-caption {
+          font-size: 0.9rem;
+          line-height: 1.5;
+          padding: 0 10px;
+        }
+
+        .nav-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 1.2rem;
+        }
+
+        .prev-btn {
+          left: 5px;
+        }
+
+        .next-btn {
+          right: 5px;
+        }
+
+        .dots-container {
+          margin-top: 20px;
+          gap: 6px;
+          flex-wrap: wrap;
+          padding: 0 10px;
+        }
+
+        .dot {
+          width: 9px;
+          height: 9px;
+          min-width: 9px;
+        }
+
+        .counter {
+          font-size: 0.85rem;
+          margin-top: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 5px;
+        }
+
+        .container {
+          margin: 50px auto 20px;
+        }
+
+        h1 {
+          font-size: 1.4rem;
+          margin-bottom: 8px;
+        }
+
+        .subtitle {
+          font-size: 0.8rem;
+          margin-bottom: 15px;
+        }
+
+        .carousel-container {
+          padding: 15px 5px;
+          border-radius: 15px;
+        }
+
+        .memory-image {
+          height: 220px;
+          border-radius: 12px;
+          margin-bottom: 15px;
+        }
+
+        .memory-date {
+          font-size: 0.8rem;
+        }
+
+        .memory-title {
+          font-size: 1.1rem;
+          margin-bottom: 8px;
+        }
+
+        .memory-caption {
+          font-size: 0.85rem;
+          line-height: 1.4;
+          padding: 0 5px;
+        }
+
+        .nav-btn {
+          width: 35px;
+          height: 35px;
+          font-size: 1.1rem;
+        }
+
+        .prev-btn {
+          left: 3px;
+        }
+
+        .next-btn {
+          right: 3px;
+        }
+
+        .dots-container {
+          gap: 5px;
+          margin-top: 15px;
+        }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          min-width: 8px;
+        }
+
+        .counter {
+          font-size: 0.8rem;
+          margin-top: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="back-btn"
+      onclick="window.location.href = 'Valentine Viral Proposal Page.html'"
+    >
+      ← Back
+    </button>
+
+    <div class="container">
+      <h1>📸 Our Precious Memories 📸</h1>
+      <p class="subtitle">Every moment with you is unforgettable</p>
+
+      <div class="carousel-container">
+        <button class="nav-btn prev-btn" onclick="changeSlide(-1)">❮</button>
+        <button class="nav-btn next-btn" onclick="changeSlide(1)">❯</button>
+
+        <div id="memoriesContainer"></div>
+
+        <div class="dots-container" id="dotsContainer"></div>
+        <div class="counter" id="counter"></div>
+      </div>
+    </div>
+
+    <script>
+      const memories = [
+        {
+          gif: "images/confession.gif",
+          date: "The Beginning",
+          title: "1st Confession",
+          caption:
+            "When I finally said those three words, my heart was racing but it felt so right",
+        },
+        {
+          gif: "images/schl moments",
+          date: "Sweet Days",
+          title: "Cute School Moments",
+          caption:
+            "Those stolen glances and secret smiles during class made every day special",
+        },
+        {
+          gif: "images/holding hands",
+          date: "First Touch",
+          title: "First Time Holding Hands",
+          caption:
+            "That nervous excitement when our fingers intertwined for the very first time",
+        },
+        {
+          gif: "images/first kiss",
+          date: "Magical Moment",
+          title: "First Kiss",
+          caption: "Time stood still and my heart exploded with happiness",
+        },
+        {
+          gif: "images/first outing",
+          date: "Adventure Begins",
+          title: "First Outing",
+          caption:
+            "Our first date outside, just the two of us exploring the world together",
+        },
+        {
+          gif: "images/first anniversary",
+          date: "Milestone",
+          title: "1st Anniversary",
+          caption:
+            "One year of love, laughter, and endless memories. Here's to forever!",
+        },
+        {
+          gif: "images/1st trip",
+          date: "Getaway",
+          title: "1st Trip",
+          caption:
+            "Exploring new places with you made everything more beautiful",
+        },
+        {
+          gif: "images/birthday",
+          date: "Special Day",
+          title: "Birthday Celebration",
+          caption: "Making your day as special as you make every day for me",
+        },
+        {
+          gif: "images/phone",
+          date: "Late Nights",
+          title: "Unlimited Texts and Calls",
+          caption:
+            "Hours of talking until sunrise, never running out of things to say",
+        },
+        {
+          gif: "images/littl,e moments",
+          date: "Forever",
+          title: "All Lovely Moments",
+          caption: "Every single moment with you is precious and unforgettable",
+        },
+      ];
+
+      let currentSlide = 0;
+
+      function initCarousel() {
+        const container = document.getElementById("memoriesContainer");
+        const dotsContainer = document.getElementById("dotsContainer");
+
+        memories.forEach((memory, index) => {
+          // Create memory card
+          const card = document.createElement("div");
+          card.className = `memory-card ${index === 0 ? "active" : ""}`;
+          card.innerHTML = `
+            <div class="memory-image"><img src="${memory.gif}" alt="${memory.title}"></div>
+            <div class="memory-date">${memory.date}</div>
+            <div class="memory-title">${memory.title}</div>
+            <div class="memory-caption">${memory.caption}</div>
+          `;
+          container.appendChild(card);
+
+          // Create dot
+          const dot = document.createElement("div");
+          dot.className = `dot ${index === 0 ? "active" : ""}`;
+          dot.onclick = () => goToSlide(index);
+          dotsContainer.appendChild(dot);
+        });
+
+        updateCounter();
+      }
+
+      function changeSlide(direction) {
+        const cards = document.querySelectorAll(".memory-card");
+        const dots = document.querySelectorAll(".dot");
+
+        cards[currentSlide].classList.remove("active");
+        dots[currentSlide].classList.remove("active");
+
+        currentSlide =
+          (currentSlide + direction + memories.length) % memories.length;
+
+        cards[currentSlide].classList.add("active");
+        dots[currentSlide].classList.add("active");
+        updateCounter();
+      }
+
+      function goToSlide(index) {
+        const cards = document.querySelectorAll(".memory-card");
+        const dots = document.querySelectorAll(".dot");
+
+        cards[currentSlide].classList.remove("active");
+        dots[currentSlide].classList.remove("active");
+
+        currentSlide = index;
+
+        cards[currentSlide].classList.add("active");
+        dots[currentSlide].classList.add("active");
+        updateCounter();
+      }
+
+      function updateCounter() {
+        document.getElementById("counter").innerText =
+          `Memory ${currentSlide + 1} of ${memories.length}`;
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") changeSlide(-1);
+        if (e.key === "ArrowRight") changeSlide(1);
+      });
+
+      // Touch swipe support for mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+      const carousel = document.querySelector(".carousel-container");
+
+      carousel.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        },
+        { passive: true },
+      );
+
+      carousel.addEventListener(
+        "touchend",
+        (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        },
+        { passive: true },
+      );
+
+      function handleSwipe() {
+        const swipeThreshold = 50; // Minimum distance for swipe
+        if (touchStartX - touchEndX > swipeThreshold) {
+          // Swipe left - next slide
+          changeSlide(1);
+        }
+        if (touchEndX - touchStartX > swipeThreshold) {
+          // Swipe right - previous slide
+          changeSlide(-1);
+        }
+      }
+
+      // Auto-advance (optional - uncomment to enable)
+      // setInterval(() => changeSlide(1), 5000);
+
+      // Initialize
+      initCarousel();
+
+      // HEART BACKGROUND ANIMATION
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "-20px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+      setInterval(createHeart, 400);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flirty Pickup Lines 💕</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      .container {
+        text-align: center;
+        z-index: 10;
+        position: relative;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        color: white;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        color: white;
+        margin-bottom: 30px;
+        opacity: 0.9;
+      }
+
+      .main-card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 35px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+        max-width: 450px;
+        margin: 0 auto;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .generate-btn {
+        padding: 15px 35px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: #ff4d6d;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        animation: buttonPulse 2s infinite;
+      }
+
+      @keyframes buttonPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+      }
+
+      .generate-btn:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+        background: #ff3355;
+        animation: none;
+      }
+
+      .generate-btn:active {
+        transform: translateY(0);
+      }
+
+      .back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(8px);
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+        z-index: 100;
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: translateX(-3px);
+      }
+
+      /* POPUP MODAL */
+      .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        animation: fadeIn 0.3s;
+      }
+
+      .popup-card {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.7);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 25px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        z-index: 1001;
+        opacity: 0;
+        animation: popIn 0.4s forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes popIn {
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      .popup-emoji {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        animation: bounce 0.6s ease;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        25% {
+          transform: translateY(-20px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        75% {
+          transform: translateY(-15px);
+        }
+      }
+
+      .pickup-line {
+        font-size: 1.4rem;
+        color: #ff4d6d;
+        font-weight: bold;
+        margin: 20px 0;
+        line-height: 1.6;
+      }
+
+      .popup-subtitle {
+        font-size: 1rem;
+        color: #666;
+        margin-top: 15px;
+      }
+
+      .close-btn {
+        margin-top: 25px;
+        padding: 12px 30px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background: #ff4d6d;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+
+      .close-btn:hover {
+        background: #ff3355;
+        transform: scale(1.05);
+      }
+
+      .stats {
+        margin-top: 20px;
+        color: white;
+        font-size: 0.95rem;
+        opacity: 0.8;
+      }
+
+      /* HEART ANIMATION */
+      .heart {
+        position: fixed;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        transform: rotate(45deg);
+        animation: floatUp 6s linear forwards;
+        z-index: 0;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: #ff4d6d;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -8px;
+        left: 0;
+      }
+      .heart::after {
+        left: -8px;
+        top: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(45deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-110vh) rotate(45deg);
+          opacity: 0;
+        }
+      }
+
+      /* SPARKLES */
+      .sparkle {
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        animation: sparkleFloat 3s linear forwards;
+        z-index: 0;
+      }
+
+      @keyframes sparkleFloat {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-80vh) scale(0);
+          opacity: 0;
+        }
+      }
+
+      /* FLOATING CUPIDS */
+      .cupid {
+        position: fixed;
+        font-size: 40px;
+        animation: cupidFloat 8s linear forwards;
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      @keyframes cupidFloat {
+        0% {
+          transform: translateX(0) translateY(0) rotate(0deg);
+          opacity: 0.8;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(200px) translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* BUBBLE ANIMATION */
+      .bubble {
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 182, 193, 0.4)
+        );
+        border-radius: 50%;
+        animation: bubbleFloat 6s ease-in-out forwards;
+        z-index: 5;
+        pointer-events: none;
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      @keyframes bubbleFloat {
+        0% {
+          transform: translateY(0) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.8;
+          transform: scale(1);
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-100vh) translateX(calc(var(--random) * 100px))
+            scale(1.5);
+          opacity: 0;
+        }
+      }
+
+      /* CONFETTI */
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: var(--confetti-color);
+        animation: confettiFall 3s linear forwards;
+        z-index: 1002;
+      }
+
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      /* MOBILE OPTIMIZATION */
+      @media (max-width: 768px) {
+        body {
+          padding: 15px;
+        }
+
+        h1 {
+          font-size: 2rem;
+          margin-bottom: 12px;
+        }
+
+        .subtitle {
+          font-size: 0.95rem;
+          margin-bottom: 25px;
+        }
+
+        .back-btn {
+          top: 10px;
+          left: 10px;
+          padding: 10px 18px;
+          font-size: 0.9rem;
+        }
+
+        .main-card {
+          padding: 25px;
+          max-width: 100%;
+        }
+
+        .generate-btn {
+          padding: 14px 30px;
+          font-size: 1rem;
+        }
+
+        .popup-card {
+          padding: 30px 20px;
+          width: 85%;
+          max-width: 100%;
+        }
+
+        .emoji {
+          font-size: 3rem;
+        }
+
+        .line-text {
+          font-size: 1.1rem;
+        }
+
+        .close-btn {
+          padding: 12px 28px;
+          font-size: 0.95rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.6rem;
+        }
+
+        .subtitle {
+          font-size: 0.85rem;
+        }
+
+        .main-card {
+          padding: 20px;
+        }
+
+        .generate-btn {
+          padding: 12px 25px;
+          font-size: 0.95rem;
+        }
+
+        .popup-card {
+          padding: 25px 15px;
+          width: 90%;
+        }
+
+        .emoji {
+          font-size: 2.5rem;
+        }
+
+        .line-text {
+          font-size: 1rem;
+        }
+
+        .counter {
+          font-size: 0.85rem;
+        }
+
+        .close-btn {
+          padding: 10px 24px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="back-btn"
+      onclick="window.location.href = 'Valentine Viral Proposal Page.html'"
+    >
+      ← Back
+    </button>
+
+    <div class="container">
+      <h1>💕 Flirty Pickup Lines 💕</h1>
+      <p class="subtitle">Click the button for a cute surprise!</p>
+
+      <div class="main-card">
+        <p style="color: white; font-size: 1.1rem; margin-bottom: 25px">
+          Ready to make someone blush? 😊
+        </p>
+        <button class="generate-btn" onclick="showPickupLine()">
+          ✨ Show Me a Line ✨
+        </button>
+        <div class="stats" id="stats">Lines shown: 0</div>
+      </div>
+    </div>
+
+    <!-- POPUP OVERLAY -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
+      <div class="popup-card" onclick="event.stopPropagation()">
+        <div class="popup-emoji">💘</div>
+        <div class="pickup-line" id="pickupLine">Loading...</div>
+        <div class="popup-subtitle">Use it wisely! 😉</div>
+        <button class="close-btn" onclick="closePopup()">Got It! 💖</button>
+      </div>
+    </div>
+
+    <script>
+      const pickupLines = [
+        "Are you a magician? Because whenever I look at you, everyone else disappears. ✨",
+        "Do you have a map? I keep getting lost in your eyes. 🗺️",
+        "Is your name Google? Because you have everything I've been searching for. 🔍",
+        "Are you a parking ticket? Because you've got FINE written all over you. 🎫",
+        "Do you believe in love at first sight, or should I walk by again? 👀",
+        "If you were a vegetable, you'd be a cute-cumber! 🥒",
+        "Are you a camera? Because every time I look at you, I smile. 📸",
+        "Do you have a Band-Aid? I just scraped my knee falling for you. 🩹",
+        "Is it hot in here, or is it just you? 🔥",
+        "Are you a time traveler? Because I see you in my future! ⏰",
+        "Do you have a sunburn, or are you always this hot? ☀️",
+        "If beauty were time, you'd be eternity. ⌛",
+        "Are you French? Because Eiffel for you. 🗼",
+        "Do you like Star Wars? Because Yoda one for me! ⭐",
+        "Are you a campfire? Because you're hot and I want s'more. 🔥",
+        "Is your dad a baker? Because you're a cutie pie! 🥧",
+        "Do you have a pencil? Because I want to erase your past and write our future. ✏️",
+        "Are you a loan? Because you've got my interest! 💰",
+        "If I could rearrange the alphabet, I'd put U and I together. 🔤",
+        "Are you WiFi? Because I'm feeling a connection. 📶",
+        "Do you play soccer? Because you're a keeper! ⚽",
+        "Are you a keyboard? Because you're just my type. ⌨️",
+        "Is your name Chapstick? Because you're da balm! 💋",
+        "Are you a banana? Because I find you a-peeling! 🍌",
+        "Do you like coffee? Because I like you a latte! ☕",
+        "Are you a dictionary? Because you add meaning to my life. 📖",
+        "If you were a fruit, you'd be a fine-apple! 🍍",
+        "Are you an angel? Because heaven is missing one. 👼",
+        "Do you have a name, or can I call you mine? 💕",
+        "Are you made of copper and tellurium? Because you're Cu-Te! ⚗️",
+      ];
+
+      let lineCount = 0;
+      let usedLines = [];
+
+      function showPickupLine() {
+        // Reset if all lines have been shown
+        if (usedLines.length === pickupLines.length) {
+          usedLines = [];
+        }
+
+        // Get random unused line
+        let availableLines = pickupLines.filter(
+          (_, index) => !usedLines.includes(index),
+        );
+        let randomIndex = pickupLines.indexOf(
+          availableLines[Math.floor(Math.random() * availableLines.length)],
+        );
+        usedLines.push(randomIndex);
+
+        // Display the line
+        document.getElementById("pickupLine").innerText =
+          pickupLines[randomIndex];
+        document.getElementById("popupOverlay").style.display = "block";
+
+        // Trigger confetti burst
+        createConfettiBurst();
+
+        // Update count
+        lineCount++;
+        document.getElementById("stats").innerText =
+          `Lines shown: ${lineCount}`;
+
+        // Random emoji
+        const emojis = [
+          "💘",
+          "💖",
+          "💗",
+          "💓",
+          "💕",
+          "💝",
+          "❤️",
+          "🥰",
+          "😍",
+          "💋",
+        ];
+        document.querySelector(".popup-emoji").innerText =
+          emojis[Math.floor(Math.random() * emojis.length)];
+      }
+
+      function closePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+      }
+
+      // Close popup with Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closePopup();
+        }
+      });
+
+      // HEART BACKGROUND ANIMATION
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "-20px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+      setInterval(createHeart, 400);
+
+      // SPARKLE ANIMATION
+      function createSparkle() {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = Math.random() * window.innerWidth + "px";
+        sparkle.style.top = window.innerHeight + "px";
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 3000);
+      }
+      setInterval(createSparkle, 300);
+
+      // CUPID ANIMATION
+      function createCupid() {
+        const cupid = document.createElement("div");
+        cupid.className = "cupid";
+        cupid.innerText = "💘";
+        cupid.style.left = Math.random() * (window.innerWidth - 50) + "px";
+        cupid.style.bottom = "-50px";
+        document.body.appendChild(cupid);
+        setTimeout(() => cupid.remove(), 8000);
+      }
+      setInterval(createCupid, 1500);
+
+      // BUBBLE ANIMATION
+      function createBubble() {
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        const randomX = (Math.random() - 0.5) * 2;
+        bubble.style.setProperty("--random", randomX);
+        bubble.style.left = Math.random() * window.innerWidth + "px";
+        bubble.style.bottom = "-30px";
+        const size = 20 + Math.random() * 30;
+        bubble.style.width = size + "px";
+        bubble.style.height = size + "px";
+        document.body.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 6000);
+      }
+      setInterval(createBubble, 800);
+
+      // CONFETTI BURST (on popup open)
+      function createConfettiBurst() {
+        const colors = [
+          "#ff4d6d",
+          "#ffc8dd",
+          "#ffafcc",
+          "#bde0fe",
+          "#a2d2ff",
+          "#ffd60a",
+        ];
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+            confetti.style.setProperty(
+              "--confetti-color",
+              colors[Math.floor(Math.random() * colors.length)],
+            );
+            confetti.style.left = Math.random() * window.innerWidth + "px";
+            confetti.style.top = "-10px";
+            confetti.style.animationDelay = Math.random() * 0.5 + "s";
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 3000);
+          }, i * 30);
+        }
+      }
+    </script>
+  </body>
+</html>
